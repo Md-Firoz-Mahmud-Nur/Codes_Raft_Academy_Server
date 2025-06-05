@@ -31,8 +31,18 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
+    // database collection
+
     const academyCodesRaft = client.db("academyCodesRaft");
     const usersCollection = academyCodesRaft.collection("users");
+
+    // Import Route
+
+    const SignModal = require("./Nur/SignModal")(usersCollection);
+
+    // Use Route
+
+    app.use(SignModal);
 
     app.post("/jwt", async (req, res) => {
       const user = req.body;
