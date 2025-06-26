@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const port = process.env.PORT || 3000;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const axios = require("axios");
 
 // Middleware
 app.use(
@@ -45,7 +46,8 @@ async function run() {
     const SignModal = require("./Nur/SignModal")(usersCollection);
     const Form = require("./Nur/Form/Form")(adminPaymentNumberCollection);
     const Enrollments = require("./Nur/Enrollments/Enrollments")(
-      enrollmentsCollection
+      enrollmentsCollection,
+      axios
     );
 
     // Use Route
