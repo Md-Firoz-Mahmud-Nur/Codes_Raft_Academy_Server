@@ -38,16 +38,21 @@ async function run() {
     const usersCollection = academyCodesRaft.collection("users");
     const adminPaymentNumberCollection =
       academyCodesRaft.collection("adminPaymentNumber");
+    const enrollmentsCollection = academyCodesRaft.collection("enrollments");
 
     // Import Route
 
     const SignModal = require("./Nur/SignModal")(usersCollection);
     const Form = require("./Nur/Form/Form")(adminPaymentNumberCollection);
+    const Enrollments = require("./Nur/Enrollments/Enrollments")(
+      enrollmentsCollection
+    );
 
     // Use Route
 
     app.use(SignModal);
     app.use(Form);
+    app.use(Enrollments);
 
     app.post("/jwt", async (req, res) => {
       const user = req.body;
