@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const webhookURL = process.env.WEBHOOK_URL;
-// console.log(webhookURL);
 
 module.exports = (enrollmentsCollection, axios) => {
   router.post("/enrollments", async (req, res) => {

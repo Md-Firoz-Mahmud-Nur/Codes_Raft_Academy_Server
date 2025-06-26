@@ -40,6 +40,7 @@ async function run() {
     const adminPaymentNumberCollection =
       academyCodesRaft.collection("adminPaymentNumber");
     const enrollmentsCollection = academyCodesRaft.collection("enrollments");
+    const videoLinksCollection = academyCodesRaft.collection("videoLinks");
 
     // Import Route
 
@@ -49,12 +50,16 @@ async function run() {
       enrollmentsCollection,
       axios
     );
+    const videoLinks = require("./Nur/VideoLinks/VideoLinks")(
+      videoLinksCollection
+    );
 
     // Use Route
 
     app.use(SignModal);
     app.use(Form);
     app.use(Enrollments);
+    app.use(videoLinks);
 
     app.post("/jwt", async (req, res) => {
       const user = req.body;
