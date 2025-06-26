@@ -8,12 +8,11 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 // Middleware
 app.use(
-  cors(
+  cors()
   //   {
   //   origin: ["http://localhost:5173"],
   //   credentials: true,
   // }
-)
 );
 app.use(express.json());
 
@@ -37,14 +36,18 @@ async function run() {
 
     const academyCodesRaft = client.db("academyCodesRaft");
     const usersCollection = academyCodesRaft.collection("users");
+    const adminPaymentNumberCollection =
+      academyCodesRaft.collection("adminPaymentNumber");
 
     // Import Route
 
     const SignModal = require("./Nur/SignModal")(usersCollection);
+    const Form = require("./Nur/Form/Form")(adminPaymentNumberCollection);
 
     // Use Route
 
     app.use(SignModal);
+    app.use(Form);
 
     app.post("/jwt", async (req, res) => {
       const user = req.body;
