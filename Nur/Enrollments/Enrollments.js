@@ -33,22 +33,65 @@ module.exports = (enrollmentsCollection, axios) => {
     }
   });
 
+  // router.get("/enrollments/check", async (req, res) => {
+  //   try {
+  //     const email = req.query.email;
+  //     if (!email) {
+  //       return res
+  //         .status(400)
+  //         .json({ enrolled: false, message: "Email is required" });
+  //     }
+
+  //     const enrollment = await enrollmentsCollection.findOne({ email });
+  //     const isEnrolled = !!enrollment;
+
+  //     res.json({ enrolled: isEnrolled });
+  //   } catch (error) {
+  //     console.error("Enrollment check error:", error);
+  //     res.status(500).json({ enrolled: false, message: "Server error" });
+  //   }
+  // });
+
+
   router.get("/enrollments/check", async (req, res) => {
     try {
       const email = req.query.email;
+
+      // Step 1: Validate input
       if (!email) {
-        return res
-          .status(400)
-          .json({ enrolled: false, message: "Email is required" });
+        return res.status(400).json({
+          enrolled: false,
+          message: "Email is required",
+        });
       }
 
+      // Step 2: Look for existing enrollment
       const enrollment = await enrollmentsCollection.findOne({ email });
-      const isEnrolled = !!enrollment;
 
-      res.json({ enrolled: isEnrolled });
+      // Step 3: No enrollment found — allow user to enroll
+      if (!enrollment) {
+        return res.status(200).json({
+          enrolled: false,
+          message: "You can request enrollment.",
+        });
+      }
+
+      // Step 4: Enrollment found — check status
+      if (enrollment.status === true) {
+        return res.status(200).json({
+          enrolled: "approved",
+        });
+      } else {
+        return res.status(200).json({
+          enrolled: "pending",
+        });
+      }
     } catch (error) {
       console.error("Enrollment check error:", error);
-      res.status(500).json({ enrolled: false, message: "Server error" });
+      return res.status(500).json({
+        enrolled: false,
+        message: "Server error",
+      });
     }
   });
 
