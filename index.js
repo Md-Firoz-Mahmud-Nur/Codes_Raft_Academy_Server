@@ -41,6 +41,8 @@ async function run() {
       academyCodesRaft.collection("adminPaymentNumber");
     const enrollmentsCollection = academyCodesRaft.collection("enrollments");
     const videoLinksCollection = academyCodesRaft.collection("videoLinks");
+    const referralTrackingCollection =
+      academyCodesRaft.collection("referralTracking");
 
     // Import Route
 
@@ -53,6 +55,9 @@ async function run() {
     const videoLinks = require("./Nur/VideoLinks/VideoLinks")(
       videoLinksCollection
     );
+    const referralTracking = require("./Nur/Referral/Referral")(
+      referralTrackingCollection
+    );
 
     // Use Route
 
@@ -60,6 +65,7 @@ async function run() {
     app.use(Form);
     app.use(Enrollments);
     app.use(videoLinks);
+    app.use(referralTracking);
 
     app.post("/jwt", async (req, res) => {
       const user = req.body;
