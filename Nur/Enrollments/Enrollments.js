@@ -33,5 +33,25 @@ module.exports = (enrollmentsCollection, axios) => {
     }
   });
 
+  router.get("/enrollments/check", async (req, res) => {
+    try {
+      const email = req.query.email;
+      if (!email) {
+        return res
+          .status(400)
+          .json({ enrolled: false, message: "Email is required" });
+      }
+
+      const enrollment = await enrollmentsCollection.findOne({ email });
+      const isEnrolled = !!enrollment;
+
+      res.json({ enrolled: isEnrolled });
+    } catch (error) {
+      console.error("Enrollment check error:", error);
+      res.status(500).json({ enrolled: false, message: "Server error" });
+    }
+  });
+
+
   return router;
 };
